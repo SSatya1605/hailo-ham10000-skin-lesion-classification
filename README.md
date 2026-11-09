@@ -387,11 +387,12 @@ hailo-ham10000-skin-lesion-classification/
 
 ## 13. References
 
-1. Tschandl, P., Rosendahl, C., and Kittler, H. (2018). The HAM10000 dataset: A large collection of multi-source dermatoscopic images of common pigmented skin lesions. *Scientific Data*. https://doi.org/10.1038/sdata.2018.161
+1. Ultralytics YOLO Documentation: https://docs.ultralytics.com/
 
-2. Ultralytics YOLO Documentation: https://docs.ultralytics.com/
+2. Hailo Developer Zone: https://hailo.ai/developer-zone/
 
-3. Hailo Developer Zone: https://hailo.ai/developer-zone/
+3. R. Bhuvaneswari and P. C. V. S. Raman, "Enhancing Skin Cancer Diagnosis with AlexNet Convolutional Neural Networks," 2023 International Conference on Integrated Intelligence and Communication Systems (ICIICS), Kalaburagi, India, 2023, pp. 1-5, doi: 10.1109/ICIICS59993.2023.10421461. keywords: {Squamous cell carcinoma;Image recognition;Basal cell carcinoma;Melanoma;Skin;Lesions;Medical diagnostic imaging;Skin cancer;Melanoma;Benign;Malignant;dermatoscopic images},
+
 
 ---
 
