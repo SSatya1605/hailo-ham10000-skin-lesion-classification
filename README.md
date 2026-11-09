@@ -1,94 +1,117 @@
-# HAM10000 Skin Lesion Detection using YOLOv8 and Hailo-8L
+# HAM10000 Skin Lesion Classification using YOLOv8 and Hailo-8L
 
-**Edge AI | Deep Learning | Computer Vision | Medical Image Analysis**
+**Deep Learning | Computer Vision | Edge AI | Medical Image Analysis | Hardware Acceleration**
 
-An end-to-end Edge AI project for binary skin lesion detection using YOLOv8 and the HAM10000-derived dataset. The trained model is converted into ONNX format, compiled into Hailo Executable Format (HEF), and deployed on Raspberry Pi 5 with a Hailo-8L AI accelerator for live camera inference.
+An end-to-end Edge AI project exploring binary skin lesion detection using the HAM10000 dataset, YOLOv8 and the Hailo-8L AI accelerator. The trained model is converted into ONNX format, compiled into Hailo Executable Format (HEF), and deployed on Raspberry Pi 5 for live camera inference.
+
+The project demonstrates the complete workflow of developing a deep learning model and deploying it on dedicated edge AI hardware.
 
 ---
 
-## Project Overview
+## 1. Project Overview
 
-Skin lesion analysis is an important application of computer vision in medical imaging. This project explores the use of deep learning and hardware acceleration to distinguish between benign and malignant skin lesions.
+Skin lesion analysis is an important application of computer vision in medical imaging. Deep learning provides the ability to learn visual patterns from dermatoscopic images and identify different lesion categories.
 
-The project covers the complete workflow, from dataset preparation and model training to model conversion, hardware compilation, and real-time inference on an edge device.
+The objective of this project is to develop an AI-based system that distinguishes between two skin lesion categories:
 
-The primary objective is to investigate how deep learning models can be deployed efficiently on resource-constrained hardware using dedicated AI accelerators.
+- **Benign**
+- **Malignant**
 
-## Key Features
+The project uses YOLOv8 for model training and the Hailo-8L accelerator for hardware-accelerated inference.
 
-- Binary skin lesion detection: Benign vs Malignant.
-- YOLOv8-based deep learning model.
-- Transfer learning using pretrained YOLO weights.
-- Image augmentation and model optimization.
+Unlike a conventional deep learning project that ends with model training and evaluation, this implementation extends to model conversion, hardware compilation and deployment on Raspberry Pi 5.
+
+### Project Highlights
+
+- HAM10000-based skin lesion dataset preparation.
+- Binary Benign vs Malignant detection.
+- YOLOv8 model training using transfer learning.
+- Dataset annotation and preprocessing.
+- Model evaluation and confusion matrix analysis.
 - ONNX model export.
-- Hailo Dataflow Compiler Studio integration.
+- Hailo Dataflow Compiler Studio for model parsing.
 - HEF generation for Hailo-8L.
-- Raspberry Pi 5 deployment.
-- Live camera inference using HailoRT.
+- Live camera inference on Raspberry Pi 5.
 - CPU and accelerator utilization monitoring.
 
-## Technology Stack
+---
+
+## 2. Technology Stack
 
 | Category | Technology |
 |---|---|
-| Programming | Python |
-| Deep Learning | PyTorch |
-| Framework | Ultralytics YOLO |
-| Model | YOLOv8 |
-| Dataset | HAM10000-derived dataset |
+| Programming Language | Python |
+| Deep Learning Framework | PyTorch |
+| Model Framework | Ultralytics YOLO |
+| Model Architecture | YOLOv8 |
+| Dataset | HAM10000 |
 | Model Export | ONNX |
 | Model Compilation | Hailo Dataflow Compiler |
-| Edge Accelerator | Hailo-8L |
-| Hardware | Raspberry Pi 5 |
+| AI Accelerator | Hailo-8L |
+| Deployment Hardware | Raspberry Pi 5 |
 | Inference Runtime | HailoRT |
-| Operating System | Ubuntu / Raspberry Pi OS |
+| Development Environment | Ubuntu Linux |
 
-## Dataset
+---
+
+## 3. Dataset
 
 The project uses a binary-labelled dataset derived from HAM10000 (Human Against Machine with 10000 training images).
 
 The original HAM10000 dataset contains approximately 10,000 dermatoscopic images belonging to seven diagnostic categories.
 
-For this implementation, the target categories are:
+For this project, the target classes are:
 
-| Class ID | Class |
+| Class ID | Category |
 |---|---|
 | 0 | Benign |
 | 1 | Malignant |
 
-The original dataset contains the following diagnostic categories:
+The original HAM10000 diagnostic categories include:
 
-- AKIEC – Actinic keratoses and intraepithelial carcinoma
-- BCC – Basal cell carcinoma
-- BKL – Benign keratosis-like lesions
-- DF – Dermatofibroma
-- MEL – Melanoma
-- NV – Melanocytic nevi
-- VASC – Vascular lesions
+| Abbreviation | Diagnosis |
+|---|---|
+| AKIEC | Actinic keratoses and intraepithelial carcinoma |
+| BCC | Basal cell carcinoma |
+| BKL | Benign keratosis-like lesions |
+| DF | Dermatofibroma |
+| MEL | Melanoma |
+| NV | Melanocytic nevi |
+| VASC | Vascular lesions |
 
-The binary class mapping is used for the detection task. The mapping methodology should be documented alongside the dataset preparation scripts.
+The binary dataset is used for training the detection model.
 
-**Dataset reference:**  
-https://www.kaggle.com/datasets/tschandl/ham10000-lesion-segmentations
+**Original dataset reference:**
 
-The dataset is not included in this repository. Users must obtain it separately and comply with its applicable licensing and usage conditions.
+https://doi.org/10.1038/sdata.2018.161
 
-## Model Architecture
+The dataset is not included in this repository. Please obtain it separately and follow its applicable licensing and usage conditions.
 
-The project uses YOLOv8 Nano (YOLOv8n) as the initial training model.
+---
 
-YOLOv8 is a convolutional neural network-based object detection architecture capable of identifying objects and predicting their bounding boxes and associated classes.
+## 4. Model Development
 
-The model is initialized using pretrained weights and fine-tuned on the binary skin lesion dataset.
+### YOLOv8
+
+The project uses the Ultralytics YOLOv8 architecture for binary skin lesion detection.
+
+The training implementation initializes a pretrained YOLOv8 Nano model and fine-tunes it using the prepared dataset.
+
+The model is configured to detect two categories:
+
+- Benign
+- Malignant
 
 ### Training Configuration
 
-| Parameter | Configuration |
+The following parameters are used in the training implementation:
+
+| Parameter | Value |
 |---|---|
-| Model initialization | yolov8n.pt |
-| Epochs | 100 |
+| Initial model | YOLOv8n |
+| Training epochs | 100 |
 | Early stopping patience | 20 |
-| Input resolution | 640 × 640 |
+| Image size | 640 × 640 |
 | Batch size | 16 |
 | Optimizer | SGD |
 | Initial learning rate | 0.001 |
@@ -102,9 +125,10 @@ The model is initialized using pretrained weights and fine-tuned on the binary s
 
 ### Data Augmentation
 
-The following augmentation techniques are applied during training:
+The training configuration includes:
 
-- Horizontal and vertical flipping
+- Horizontal flipping
+- Vertical flipping
 - HSV augmentation
 - Image rotation
 - Translation
@@ -112,89 +136,97 @@ The following augmentation techniques are applied during training:
 - Mosaic augmentation
 - MixUp augmentation
 
-These transformations are used to improve the model's ability to generalize across different image appearances.
+These techniques are used to introduce variations during training and improve the model's ability to generalize.
 
-### Training
+### Training Implementation
 
-The model is trained using the Ultralytics YOLO framework.
+The main training implementation is available in:
 
-```python
-from ultralytics import YOLO
+`code/train3.py`
 
-model = YOLO("yolov8n.pt")
+Other model development files include:
 
-model.train(
-    data="configs/data.yaml",
-    epochs=100,
-    patience=20,
-    imgsz=640,
-    batch=16,
-    optimizer="SGD",
-    lr0=0.001,
-    lrf=0.01,
-    momentum=0.937,
-    weight_decay=0.0005,
-    cos_lr=True,
-    augment=True,
-    amp=True,
-    plots=True,
-    save=True,
-    device=0
-)
-```
+- `code/annotate.py` — dataset annotation workflow.
+- `code/export.py` — model export workflow.
+- `code/best.pt` — trained model checkpoint.
 
-The full training configuration is available in the source code.
+---
 
-## ONNX Model Export
+## 5. Model Evaluation
+
+The trained model is evaluated using classification and detection performance visualizations.
+
+The repository includes:
+
+- Confusion matrix.
+- Normalized confusion matrix.
+- Training results and performance plots.
+
+### Confusion Matrix
+
+![Confusion Matrix](Results/confusion_matrix.png)
+
+### Normalized Confusion Matrix
+
+![Normalized Confusion Matrix](Results/confusion_matrix_normalized.png)
+
+### Training Results
+
+![Training Results](Results/results.png)
+
+These visualizations help examine the model's performance across the two target categories.
+
+The project also highlights an important limitation: class imbalance in the dataset can influence model performance, particularly its ability to recognize the less represented category.
+
+---
+
+## 6. ONNX Model Export
 
 After training, the model is exported into ONNX format.
 
 ONNX provides an interoperable representation of the trained model and serves as the input to the Hailo compilation workflow.
 
-Example:
+The exported model is subsequently parsed and optimized using the Hailo toolchain.
 
-```python
-from ultralytics import YOLO
+The model export implementation is available in:
 
-model = YOLO("runs/detect/skin_lesion/weights/best.pt")
+`code/export.py`
 
-model.export(
-    format="onnx",
-    imgsz=640,
-    simplify=True
-)
-```
+---
 
-The exported ONNX model is used in the subsequent Hailo compilation process.
+## 7. Hailo-8L Model Compilation
 
-## Hailo-8L Model Compilation
+One of the main components of this project is deploying the trained deep learning model using the Hailo-8L AI accelerator.
 
-The ONNX model is compiled into Hailo Executable Format (HEF) using the Hailo toolchain.
+The ONNX model is converted into Hailo Executable Format (HEF), which can be executed through HailoRT.
+
+### Compilation Workflow
 
 The conversion process involves the following stages:
 
-1. Export the trained YOLO model into ONNX format.
+1. Export the trained model into ONNX format.
 2. Prepare representative calibration images.
 3. Launch Hailo Dataflow Compiler Studio.
 4. Upload and parse the ONNX model.
-5. Inspect the original ONNX graph and generated Hailo graph.
-6. Identify the correct starting and ending nodes.
-7. Compile the model for Hailo-8L.
-8. Generate the final HEF file.
+5. Inspect the original ONNX computation graph.
+6. Inspect the generated Hailo computation graph.
+7. Identify the correct starting and ending nodes.
+8. Compile the model for Hailo-8L.
+9. Generate the final HEF file.
 
-### Launch Hailo Dataflow Compiler Studio
+### Launching Hailo Dataflow Compiler Studio
 
 ```bash
 hailo dfc-studio
 ```
 
-Open the local address displayed in the terminal.
+The local address displayed in the terminal can be opened in a web browser.
 
-Upload the ONNX model and inspect the computation graph.
+Upload the ONNX model and inspect the computation graph before proceeding with compilation.
 
 ### HEF Compilation
 
-An example compilation command is shown below:
+An example Hailo Model Zoo compilation command is:
 
 ```bash
 hailomz compile yolov8s \
@@ -206,42 +238,52 @@ hailomz compile yolov8s \
     --end-node-names "<verified-output-node-names>"
 ```
 
-The architecture name, input node, output nodes and compilation options must match the actual ONNX graph and installed Hailo Model Zoo version.
+The model variant, input node, output nodes and compilation options must match the actual exported ONNX graph and installed Hailo Model Zoo version.
 
-The calibration dataset should contain representative training images and should use preprocessing consistent with the deployed model.
+The Hailo compilation process can encounter errors due to:
 
-**Note:** The supplied training configuration initializes YOLOv8n, whereas the recorded Hailo deployment command references a YOLOv8s HEF. The exact model variant used for the final deployment must be verified against the actual ONNX and HEF artifacts before reproducing this workflow.
+- Incorrect starting or ending node names.
+- Incorrect model architecture configuration.
+- Incorrect file paths.
+- Incorrect class-label configuration.
+- Incompatible model or compiler versions.
 
-## Raspberry Pi 5 Deployment
+### Hailo Documentation
+
+Detailed implementation notes and deployment documentation are available in the `hailo docs/` directory.
+
+---
+
+## 8. Raspberry Pi 5 Deployment
 
 The compiled HEF model is deployed on Raspberry Pi 5 with the Hailo-8L AI accelerator.
 
-The Hailo detection application is used to perform inference using the Raspberry Pi camera.
+The objective is to perform inference using a live camera input rather than relying only on previously recorded images or videos.
 
-### Hardware Requirements
+### Hardware Components
 
-- Raspberry Pi 5
-- Hailo-8L AI HAT+
-- Compatible Raspberry Pi camera
-- MicroSD card
-- Compatible power supply
+- Raspberry Pi 5.
+- Hailo-8L AI accelerator.
+- Compatible Raspberry Pi camera.
+- MicroSD card.
+- Compatible power supply.
 
 ### Live Camera Inference
+
+The Hailo detection application is used to capture camera frames and perform inference.
 
 The following command was used for live inference:
 
 ```bash
 hailo-detect \
-    --hef-path /home/satya/heffile/yolov8s.hef \
+    --hef-path /path/to/yolov8s.hef \
     --input rpi \
-    --labels-json /home/satya/heffile/labels.json
+    --labels-json /path/to/labels.json
 ```
 
-The application captures camera frames and performs inference using the Hailo accelerator.
+The application processes the camera input and displays detection results with bounding boxes, class labels and confidence scores.
 
-Predictions are displayed with bounding boxes, class labels and confidence scores.
-
-### Labels Configuration
+### Label Configuration
 
 The Hailo detection application uses a JSON configuration similar to:
 
@@ -257,116 +299,110 @@ The Hailo detection application uses a JSON configuration similar to:
 }
 ```
 
-The additional Unlabeled entry is used by the detection application as a background/unlabelled class entry. It does not represent an additional trained lesion category.
+The additional Unlabeled entry is used by the detection application's label configuration. It is not a third trained lesion category.
 
-The label ordering must be consistent with the model output and the runtime's class-index handling.
+The label ordering must match the model output and runtime configuration.
 
-## Hardware Performance
+For complete live inference instructions, refer to:
 
-During live inference, CPU usage and Hailo accelerator utilization were monitored using system monitoring tools and Hailo utilities.
+[`live_inference.md`](live_inference.md)
 
-The recorded observations were:
+---
+
+## 9. Hardware Utilization
+
+During live inference, CPU usage and Hailo accelerator utilization were monitored.
+
+The documented deployment session recorded the following observations:
 
 | Metric | Observed Value |
 |---|---:|
 | Maximum CPU utilization | Approximately 25% |
 | Hailo accelerator utilization | Approximately 50% |
 
-These values are observations from the documented deployment session, not standardized benchmark measurements.
+These observations demonstrate the use of dedicated AI acceleration hardware for inference without relying exclusively on the Raspberry Pi CPU.
 
-The results demonstrate the use of dedicated hardware acceleration for edge inference while avoiding exclusive dependence on the Raspberry Pi CPU.
+The values represent observations from the documented test session, not standardized performance benchmarks.
 
-## Results and Demonstrations
+A more comprehensive evaluation could include:
 
-The repository includes:
+- Average inference latency.
+- Frames per second (FPS).
+- CPU utilization over time.
+- Hailo accelerator utilization over time.
+- Power consumption.
+- Quantized model accuracy.
 
-- Training performance plots
-- Model evaluation outputs
-- Confusion matrix
-- Hailo model graph screenshots
-- Live detection samples
-- Raspberry Pi hardware demonstration
-- Hardware utilization screenshots
+---
 
-See the `results/`, `docs/` and `assets/` directories.
-
-## Repository Structure
+## 10. Repository Structure
 
 ```text
-hailo-ham10000-yolov8-edge-ai/
+hailo-ham10000-skin-lesion-classification/
 │
 ├── README.md
-├── requirements.txt
-├── .gitignore
+├── live_inference.md
 │
-├── configs/
-│   ├── data.yaml.example
-│   └── training_config.py
+├── code/
+│   ├── annotate.py
+│   ├── best.pt
+│   ├── export.py
+│   └── train3.py
 │
-├── dataset/
-│   └── README.md
-│
-├── src/
-│   ├── train.py
-│   ├── validate.py
-│   ├── predict.py
-│   └── export_onnx.py
-│
-├── models/
-│   └── README.md
-│
-├── hailo/
-│   ├── compilation_notes.md
-│   ├── model_parsing.md
-│   └── screenshots/
-│
-├── deployment/
-│   ├── raspberry_pi_setup.md
-│   ├── live_inference.md
-│   └── labels.json
-│
-├── results/
+├── Results/
 │   ├── confusion_matrix.png
-│   ├── results.png
-│   ├── training_metrics.csv
-│   └── detection_samples/
+│   ├── confusion_matrix_normalized.png
+│   └── results.png
 │
-├── docs/
-│   └── architecture.png
-│
-└── assets/
-    └── demo.mp4
+└── hailo docs/
+    ├── execution.pdf
+    └── Using Hailo computation power with Raspberry pi
+        to run Deep learning models.pdf
 ```
 
-## Limitations
+---
 
-- The original HAM10000 dataset has a significant class imbalance.
-- Binary class mapping may introduce ambiguity between diagnostic categories.
-- Detection quality depends on the quality and consistency of bounding-box annotations.
+## 11. Limitations
+
+- The original HAM10000 dataset has an imbalanced class distribution.
+- Mapping seven diagnostic categories into two broad categories may introduce ambiguity.
+- Detection performance depends on the quality and consistency of bounding-box annotations.
 - Performance on the training dataset does not guarantee generalization to independent clinical data.
-- Quantization and hardware compilation may affect model accuracy.
-- The system has not been clinically validated.
+- Hardware quantization and compilation may affect model accuracy.
+- The project has not been clinically validated.
 
-## Future Improvements
+---
+
+## 12. Future Improvements
 
 - Improve class imbalance handling.
-- Evaluate additional lightweight CNN architectures.
-- Investigate model quantization and optimization.
-- Measure inference latency and throughput under controlled conditions.
-- Implement improved real-time camera processing.
+- Investigate additional lightweight deep learning architectures.
+- Explore quantization and model optimization strategies.
+- Evaluate inference latency and throughput under controlled conditions.
+- Improve real-time camera processing.
 - Investigate model explainability techniques.
-- Evaluate performance on independent dermatoscopic datasets.
+- Evaluate generalization using independent dermatoscopic datasets.
 
-## References
+---
 
-1. Tschandl, P., Rosendahl, C., and Kittler, H. (2018). The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions. Scientific Data. https://doi.org/10.1038/sdata.2018.161
+## 13. References
+
+1. Tschandl, P., Rosendahl, C., and Kittler, H. (2018). The HAM10000 dataset: A large collection of multi-source dermatoscopic images of common pigmented skin lesions. *Scientific Data*. https://doi.org/10.1038/sdata.2018.161
+
 2. Ultralytics YOLO Documentation: https://docs.ultralytics.com/
+
 3. Hailo Developer Zone: https://hailo.ai/developer-zone/
 
 ---
 
-**Project Category:** Deep Learning | Computer Vision | Edge AI | Hardware Acceleration
+## Disclaimer
 
-**Hardware Platform:** Raspberry Pi 5 + Hailo-8L AI Accelerator
+This project is developed for educational and experimental research purposes only.
 
-**Disclaimer:** This project is intended for educational and experimental research purposes only. It is not a medical diagnostic system and must not be used to make clinical decisions.
+It is not a clinically validated medical diagnostic system and must not be used to diagnose skin cancer or make medical treatment decisions.
+
+---
+
+**Project Focus:** Deep Learning | Computer Vision | Edge AI | Hardware Acceleration
+
+**Deployment Platform:** Raspberry Pi 5 + Hailo-8L AI Accelerator
