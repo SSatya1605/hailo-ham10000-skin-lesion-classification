@@ -69,7 +69,7 @@ The original dataset contains the following diagnostic categories:
 The binary class mapping is used for the detection task. The mapping methodology should be documented alongside the dataset preparation scripts.
 
 **Dataset reference:**  
-https://doi.org/10.1038/sdata.2018.161
+https://www.kaggle.com/datasets/tschandl/ham10000-lesion-segmentations
 
 The dataset is not included in this repository. Users must obtain it separately and comply with its applicable licensing and usage conditions.
 
