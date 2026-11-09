@@ -83,7 +83,7 @@ The binary dataset is used for training the detection model.
 
 **Original dataset reference:**
 
-https://doi.org/10.1038/sdata.2018.161
+https://www.kaggle.com/datasets/tschandl/ham10000-lesion-segmentations
 
 The dataset is not included in this repository. Please obtain it separately and follow its applicable licensing and usage conditions.
 
